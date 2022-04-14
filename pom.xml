@@ -9,7 +9,7 @@
             <relativePath/> <!-- lookup parent from repository -->
         </parent>
         <groupId>com.daveayan</groupId>
-        <artifactId>spring-boot-rest-api</artifactId>
+        <artifactId>scaling-winner</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <name>spring-boot-rest-api</name>
         <description>spring-boot-rest-api</description>
