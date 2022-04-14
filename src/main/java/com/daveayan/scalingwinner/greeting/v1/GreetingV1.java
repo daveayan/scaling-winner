@@ -1,15 +1,15 @@
-package com.daveayan.scalingwinner.greeting;
+package com.daveayan.scalingwinner.greeting.v1;
 
-public class Greeting {
+public class GreetingV1 {
     private long id;
     private final String content;
 
-    public Greeting(long id, String content) {
+    public GreetingV1(long id, String content) {
         this.id = id;
         this.content = content;
     }
 
-    public Greeting(String content) {
+    public GreetingV1(String content) {
         this.id = 0L;
         this.content = content;
     }

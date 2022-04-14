@@ -1,10 +1,19 @@
-GET http://localhost:8080/api/greeting/1
+GET http://localhost:8080/api/v1/greeting/1
 
 ###
 
-POST http://localhost:8080/api/greeting
+POST http://localhost:8080/api/v1/greeting
 content-type: application/json
 
 {
     "content": "World 101"
+}
+
+POST http://localhost:8080/api/v2/greeting
+content-type: application/json
+
+{
+    "message": "World 101",
+    "from": "ABC",
+    "to": "XYZ"
 }
