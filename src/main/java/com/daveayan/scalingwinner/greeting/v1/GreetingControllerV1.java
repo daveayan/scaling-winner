@@ -3,6 +3,8 @@ package com.daveayan.scalingwinner.greeting.v1;
 import com.daveayan.scalingwinner.greeting.common.DuplicateGreetingException;
 import com.daveayan.scalingwinner.greeting.common.GreetingNotFoundException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +17,15 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class GreetingControllerV1 {
+    private static final Logger LOG = LoggerFactory.getLogger(GreetingControllerV1.class);
+    
     @Autowired GreetingStoreV1 storeV1;
 
     @GetMapping("/v1/greeting/{id}")
     ResponseEntity<GreetingV1> getGreetingV1(
         @PathVariable Long id
     ) {
+        LOG.info("##### getGreetingV1 Call made #####");
         try {
             GreetingV1 greetingFromStore =  storeV1.getFromStore(id);
             return new ResponseEntity<GreetingV1>(greetingFromStore, HttpStatus.OK);
