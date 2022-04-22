@@ -12,16 +12,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
+@RequestMapping("/v1/greeting")
 public class GreetingControllerV1 {
     private static final Logger LOG = LoggerFactory.getLogger(GreetingControllerV1.class);
     
     @Autowired GreetingStoreV1 storeV1;
 
-    @GetMapping("/v1/greeting/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<GreetingV1> getGreetingV1(
         @PathVariable Long id
     ) {
@@ -34,7 +36,7 @@ public class GreetingControllerV1 {
         }
     }
 
-    @PostMapping("/v1/greeting")
+    @PostMapping("")
     ResponseEntity<GreetingV1> newGreetingV1(@RequestBody GreetingV1 newGreeting) {
         try {
             GreetingV1 createdGreeting = storeV1.addNewToStore(newGreeting);
