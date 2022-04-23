@@ -21,27 +21,30 @@ import org.springframework.web.server.ResponseStatusException;
 public class GreetingControllerV1 {
     private static final Logger LOG = LoggerFactory.getLogger(GreetingControllerV1.class);
     
-    @Autowired GreetingStoreV1 storeV1;
+    @Autowired GreetingServiceV1 serviceV1;
 
     @GetMapping("/{id}")
-    ResponseEntity<GreetingV1> getGreetingV1(
-        @PathVariable Long id
-    ) {
-        LOG.info("##### getGreetingV1 Call made #####");
+    ResponseEntity<GreetingV1> getGreetingV1(@PathVariable Long id) {
+        LOG.trace("IN getGreetingV1");
         try {
-            GreetingV1 greetingFromStore =  storeV1.getFromStore(id);
+            GreetingV1 greetingFromStore =  serviceV1.getFromStore(id);
+            LOG.trace("OUT getGreetingV1");
             return new ResponseEntity<GreetingV1>(greetingFromStore, HttpStatus.OK);
         } catch (GreetingNotFoundException e) {
+            LOG.trace("ERROR getGreetingV1");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "NotFoundException");
         }
     }
 
     @PostMapping("")
     ResponseEntity<GreetingV1> newGreetingV1(@RequestBody GreetingV1 newGreeting) {
+        LOG.trace("IN newGreetingV1");
         try {
-            GreetingV1 createdGreeting = storeV1.addNewToStore(newGreeting);
+            GreetingV1 createdGreeting = serviceV1.addNewToStore(newGreeting);
+            LOG.trace("OUT newGreetingV1");
             return new ResponseEntity<GreetingV1>(createdGreeting, HttpStatus.CREATED);
         } catch (DuplicateGreetingException e) {
+            LOG.trace("ERROR newGreetingV1");
             throw new ResponseStatusException(HttpStatus.CONFLICT, "DuplicateException");
         }
     }
