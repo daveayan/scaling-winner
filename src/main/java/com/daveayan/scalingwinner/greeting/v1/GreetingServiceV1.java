@@ -6,6 +6,7 @@ import com.daveayan.scalingwinner.greeting.common.GreetingNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,7 +14,8 @@ public class GreetingServiceV1 {
     private static final Logger LOG = LoggerFactory.getLogger(GreetingServiceV1.class);
     @Autowired GreetingStoreV1 storeV1;
 
-    GreetingV1 getFromStore(Long id) throws GreetingNotFoundException {
+    @Cacheable("greetings")
+    public GreetingV1 getFromStore(Long id) throws GreetingNotFoundException {
         LOG.trace("IN getFromStore " + id);
 
         GreetingV1 greeting = storeV1.getFromStore(id);
