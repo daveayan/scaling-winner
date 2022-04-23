@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class GreetingsV2HTTPTest {
+public class GreetingsV2HTTP {
     @LocalServerPort
     private int port;
 
