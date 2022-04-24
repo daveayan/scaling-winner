@@ -15,7 +15,7 @@ public class GreetingServiceV1 {
     private static final Logger LOG = LoggerFactory.getLogger(GreetingServiceV1.class);
     @Autowired GreetingStoreV1 storeV1;
 
-    @Cacheable(cacheNames = "greetings-v1", key = "#result.id")
+    @Cacheable(cacheNames = "greetings-v1")
     public GreetingV1 getFromStore(Long id) throws GreetingNotFoundException {
         LOG.trace("IN getFromStore " + id);
 
