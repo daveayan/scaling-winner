@@ -10,6 +10,14 @@ docker run -d -p 8081:8080 daveayan/scaling-winner
 docker run -d -p 8082:8080 daveayan/scaling-winner
 docker run -d -p 8083:8080 daveayan/scaling-winner
 
+docker login
+docker tag daveayan/scaling-winner daveayan/scaling-winner
+docker push daveayan/scaling-winner
+
+kubectl create deployment scaling-winner --image=daveayan/scaling-winner --dry-run -o=yaml > deployment.yaml
+kubectl create service clusterip scaling-winner --tcp=8080:8080 --dry-run -o=yaml >> deployment.yaml
+kubectl port-forward scaling-winner 8080:8080
+
 minikube dashboard
 
 kubectl create deployment scaling-winner --image=daveayan/scaling-winner --dry-run -o=yaml > deployment.yaml
@@ -46,3 +54,7 @@ mongodb
 grafana
 datadog
 Hazelcast
+
+Discovery Token: ejPxXU01UPb72hur9Yp9UYEh2p8Hh8XdiGAgkj4OOjr9qoRdXA
+
+Keystore and truststore password: 9219dc03e68
