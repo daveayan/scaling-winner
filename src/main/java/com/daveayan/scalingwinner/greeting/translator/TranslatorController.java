@@ -39,6 +39,8 @@ public class TranslatorController {
             status = "Found";
         }
         GreetingTranslator t = new GreetingTranslator(text, translatedText, from, to, status);
+
+        LOG.trace("OUT getTranslatedString " + t);
         return new ResponseEntity<GreetingTranslator>(t, HttpStatus.OK);
     }
 }

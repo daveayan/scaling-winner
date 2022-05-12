@@ -58,4 +58,7 @@ public class GreetingTranslator {
         this.status = status;
     }
 
+    public String toString() {
+        return "|== " + fromLanguage + " == " + toLanguage + " == " + incomingText + " == " + translatedText + " == " + status + " ==|";
+    }    
 }
