@@ -22,9 +22,13 @@ public class TranslatorController {
     private Map<String, String> translations = new HashMap<String, String>();
 
     public TranslatorController() {
+        LOG.trace("IN TranslatorController constructor");
+        
         translations.put("Hello", "Hola");
         translations.put("Thank You", "Gracias");
         translations.put("Bye", "Adios");
+
+        LOG.trace("OUT TranslatorController constructor");
     }
 
     @GetMapping("")

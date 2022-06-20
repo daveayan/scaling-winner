@@ -13,6 +13,11 @@ public class GreetingServiceV2 {
     private static final Logger LOG = LoggerFactory.getLogger(GreetingServiceV2.class);
     @Autowired GreetingStoreV2 storeV2;
 
+    public GreetingServiceV2() {
+        LOG.trace("IN GreetingServiceV2 constructor");
+        LOG.trace("OUT GreetingServiceV2 constructor");
+    }
+
     GreetingV2 getFromStore(Long id) throws GreetingNotFoundException {
         LOG.trace("IN getFromStore " + id);
 

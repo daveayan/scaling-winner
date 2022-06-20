@@ -24,6 +24,11 @@ public class GreetingControllerV2 {
     private static final Logger LOG = LoggerFactory.getLogger(GreetingControllerV2.class);
     @Autowired GreetingServiceV2 serviceV2;
 
+    public GreetingControllerV2() {
+        LOG.trace("IN GreetingControllerV2 constructor");
+        LOG.trace("OUT GreetingControllerV2 constructor");
+    }
+
     @GetMapping("/{id}")
     ResponseEntity<GreetingV2> getGreetingV2(@RequestHeader HttpHeaders headers, @PathVariable Long id) {
         LOG.trace("IN getGreetingV1");
