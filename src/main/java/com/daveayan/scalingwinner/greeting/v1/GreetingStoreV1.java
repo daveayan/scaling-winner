@@ -16,6 +16,11 @@ public class GreetingStoreV1 {
     private static Map<Long, GreetingV1> data = new HashMap<Long, GreetingV1>();
     private static Long idCounter = 1L;
 
+    public GreetingStoreV1() {
+        LOG.trace("IN GreetingStoreV1 constructor");
+        LOG.trace("OUT GreetingStoreV1 constructor");
+    }
+
     GreetingV1 getFromStore(Long id) throws GreetingNotFoundException {
         LOG.trace("IN getFromStore " + id);
 
