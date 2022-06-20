@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 
 @RestController
 @RequestMapping("/v1/greeting")
@@ -36,6 +38,11 @@ public class GreetingControllerV1 {
     private int serverPort;
 
     private String URLToTranslate = null;
+
+    @Autowired
+    private CircuitBreakerFactory circuitBreakerFactory;
+
+    // https://www.baeldung.com/spring-cloud-circuit-breaker
 
     public GreetingControllerV1() {
         LOG.trace("IN GreetingControllerV1 constructor");
@@ -56,12 +63,22 @@ public class GreetingControllerV1 {
             GreetingV1 greetingFromStore =  serviceV1.getFromStore(id);
             RestTemplate rest = new RestTemplate();
 
-            ResponseEntity<GreetingTranslator> restResponseGreetingTranslator = rest.getForEntity(
-                URLToTranslate + "/v1/translate?text=Hello&from=en&to=es", 
-                GreetingTranslator.class
-            );
+        //     return webClient.get().uri("/slow").retrieve().bodyToMono(String.class).transform(
+		// it -> cbFactory.create("slow").run(it, throwable -> return Mono.just("fallback")));
 
-            // webClient.get().
+            CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
+            ResponseEntity<GreetingTranslator> restResponseGreetingTranslator =  
+                circuitBreaker.run(() -> rest.getForEntity(
+                    URLToTranslate + "/v1/translate?text=Hello&from=en&to=es", 
+                    GreetingTranslator.class
+                ), 
+                throwable -> null);
+
+
+            // ResponseEntity<GreetingTranslator> restResponseGreetingTranslator = rest.getForEntity(
+            //     URLToTranslate + "/v1/translate?text=Hello&from=en&to=es", 
+            //     GreetingTranslator.class
+            // );
 
             String translatedText = restResponseGreetingTranslator.getBody().getTranslatedText();
             GreetingV1 newGreeting = new GreetingV1(
@@ -76,6 +93,24 @@ public class GreetingControllerV1 {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "NotFoundException");
         }
     }
+
+    // public Mono<GreetingV1> getTranslatedGreeting() {
+    //     // translateServiceCircuitBreaker.run(rest.getForEntity(
+    //     //         URLToTranslate + "/v1/translate?text=Hello&from=en&to=es", 
+    //     //         GreetingTranslator.class
+    //     //     ));
+
+    //     Mono<GreetingV1> returnMono = translateServiceCircuitBreaker.run(
+    //         webClient.get().uri("/v1/translate?text=Hello&from=en&to=es").retrieve().bodyToMono(GreetingV1.class), 
+    //         throwable -> {
+    //             LOG.warn("Error making request to book service", throwable);
+    //             return Mono.just(new GreetingV1(1, "Hello"));
+    //         });
+
+    //     returnMono.get
+
+    //     return returnMono;
+    //   }
 
     @PostMapping("")
     ResponseEntity<GreetingV1> newGreetingV1(@RequestHeader HttpHeaders headers, @RequestBody GreetingV1 newGreeting) {
