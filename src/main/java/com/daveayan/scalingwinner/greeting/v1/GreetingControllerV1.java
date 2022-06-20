@@ -10,12 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -35,6 +37,11 @@ public class GreetingControllerV1 {
 
     private String URLToTranslate = null;
 
+    public GreetingControllerV1() {
+        LOG.trace("IN GreetingControllerV1 constructor");
+        LOG.trace("OUT GreetingControllerV1 constructor");
+    }
+
     @PostConstruct
     public void init() {
         LOG.trace("IN init " + serverPort);
@@ -43,7 +50,7 @@ public class GreetingControllerV1 {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<GreetingV1> getGreetingV1(@PathVariable Long id) {
+    ResponseEntity<GreetingV1> getGreetingV1(@RequestHeader HttpHeaders headers, @PathVariable Long id) {
         LOG.trace("IN getGreetingV1");
         try {
             GreetingV1 greetingFromStore =  serviceV1.getFromStore(id);
@@ -71,7 +78,7 @@ public class GreetingControllerV1 {
     }
 
     @PostMapping("")
-    ResponseEntity<GreetingV1> newGreetingV1(@RequestBody GreetingV1 newGreeting) {
+    ResponseEntity<GreetingV1> newGreetingV1(@RequestHeader HttpHeaders headers, @RequestBody GreetingV1 newGreeting) {
         LOG.trace("IN newGreetingV1");
         try {
             GreetingV1 createdGreeting = serviceV1.addNewToStore(newGreeting);
